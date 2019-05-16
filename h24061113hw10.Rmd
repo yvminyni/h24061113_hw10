@@ -1,0 +1,726 @@
+---
+title: "h24061113hw10"
+author: "Yiyun Lee"
+output: html_document
+---
+# R review
+
+參考書目:
+W.John Braun and Duncan J.Murdoch (2016):*A First Course in Statistical Programming with R, 2nd ed. *.United States of America by Sheridan Books, Inc.
+
+
+## contents
+1. Basic
+2. Programming statistical graphics
+3. Flow control
+4. Random variables
+5. Matrix
+
+    
+
+#Basic
+##contents
+1. Use as a calculator
+2. Standard formula
+    + Other summary measures
+    + Quitting R
+    + Getting help
+3. Packages,libraries,and repositories
+4. Simple patterned vectors
+    + Vectors with random patterns
+    + Character vectors
+5. Factors
+6. Matrices and arrays
+7. Missing values and other special values
+8. Graphics Functions
+    + The sample median
+9. Logical vectors
+    + Boolean algebra
+10. Data frames and lists  
+    + Taking random samples from populations
+    + Lists
+11. Data input and output
+    + setwd()
+    + dump()
+    + source()
+    + Redirecting R output
+    + Saving and retrieving image files
+    + The read.table function
+    
+    
+## Use as a calculator
+```
+ + (add), - (subtract), * (multiply), and / (divide)
+ compute powers with the ^ operator
+```
+
+Modular arithmetic is also available.     
+For example,you can compute the remainder after division of 31 by 7
+```{r}
+31 %% 7
+```
+ the integer part of a fraction as
+```{r}
+31 %/% 7
+```
+
+the sequence of integers from 17 to 28 may be displayed :
+```{r}
+17:28
+```
+
+## Standard formula
+```
+mean(x)
+sum(x)
+var(x) # variance 
+summary(x) #  summary  
+length(x) # number of elements in x 
+min(x) # minimum value of x 
+max(x) # maximum value of x 
+pmin(x, y) # pairwise minima of corresponding elements of x and y 
+pmax(x, y) # pairwise maxima of x and y 
+range(x) # difference between maximum and minimum of data in x 
+IQR(x) # interquartile range: difference between 1st and 3rd # quartiles of data in x
+```
+
+### Quitting R
+```
+q()
+```
+###Getting help
+If you know the name of the function that you need help with, the help() functionislikelysufficient.
+You can put a question mark (?) in front of your query. 
+```
+example: ?q
+help( )
+```
+Another function that is often used is help.search(), abbreviated as a double question mark.
+For example,to see whether there are any functions that do optimization (finding minima or maxima)
+```
+??optimization
+help.search("optimization")
+```
+
+##Packages,libraries,and repositories
+
+When you start your R session,you will have some packages loaded and available for use, while others are stored on your computer in a library.
+```
+library() 
+```
+To see which packages are loaded
+```{r}
+search()
+```
+```
+library(notInstalled)
+## Error in library(notInstalled): there is no package called 'notInstalled'
+```
+This means that the package doesn't exist on your computer,but it might be available in a repository online.
+you can run a command like
+```
+install.packages(" ")
+```
+
+### Simple patterned vectors 
+
+Patterned vectors can also be produced using the seq() function as well as the rep() function. 
+
+
+ The seq() function has several optional parameters, including one named by. Ifby is not specified, the default value of 1 will be used.
+ 
+ 
+ ```{r}
+ seq(1, 21, by = 2)
+ ```
+
+Repeated patterns are obtained using rep(). 
+
+```{r}
+rep(3, 12)
+rep(seq(2, 20, by = 2), 2)
+```
+
+### Vectors with random patterns 
+
+sample() function allows us to simulate things like the results of the repeated tossing of a 6-sided die.
+```{r}
+sample(1:6, size = 8, replace = TRUE) 
+```
+
+###Character vectors
+```
+more.colors 
+```
+```{r}
+colors <- c("red", "yellow", "blue") 
+more.colors <- c(colors, "green", "magenta", "cyan") 
+```
+```
+substr()
+```
+To take substrings, use substr(). It takes arguments substr(x, start, stop), where x is a vector of character strings, and start and stop say which characters to keep. 
+
+##Factors
+Factors offer an alternative way to store character data. 
+```
+factor() 
+```
+ To see what the codes are for our factor, we can type
+```
+as.integer()
+```
+The labels for the levels are stored just once each, rather than being repeated. The codes are indices of the vector of levels
+```
+levels()
+levels()[as.integer()]
+```
+
+##Matrices and arrays 
+
+**matrices**
+To arrange values into a matrix, we use the matrix() function:
+```{r}
+m <- matrix(1:6, nrow = 2, ncol = 3) 
+m
+```
+We can then access elements using two indices
+```{r}
+m[1, 2]
+```
+Whole rows or columns of matrices may be selected by leaving one index blank:
+```{r}
+m[1,]
+m[,1]
+```
+
+**array**
+A more general way to store data is in an array. Arrays have multiple indices, and are created using the array function:
+```{r}
+a <- array(1:24, c(3, 4, 2)) 
+a
+```
+
+### Missing values and other special values 
+The missing value symbol is NA.
+```{r}
+some.evens <- NULL # creates a vector with no elements 
+some.evens[seq(2, 20, 2)] <- seq(2, 20, 2) 
+some.evens
+```
+also R uses NA to signal that the value is unknown.
+```{r}
+x <- c(0, 1, 2) 
+x / x
+```
+Here R has tried to evaluate 1/0 and reports the infinite result as Inf. 
+When there may be missing values, the is.na() function should be used to detect them. 
+```{r}
+is.na(some.evens)
+```
+The ! symbol means 'not'
+```{r}
+!is.na(some.evens)
+some.evens[!is.na(some.evens)]
+```
+
+##Graphics Functions 
+histogram
+scatterplot
+```{r}
+hist(islands) 
+x <- seq(1, 10) 
+y <- x^2 - 10*x 
+plot(x, y)
+```
+```
+curve()   function 
+```
+A simple example involves plotting the sine function on the interval [0,6*pi]:
+```{r}
+curve(expr = sin, from = 0, to = 6 * pi)
+```
+
+###The sample median
+```
+median(x)
+```
+
+
+
+##Logical vectors
+contain two different elements: TRUE and FALSE, as well as NA for missing.
+
+###Boolean algebra 
+
+![Truth table for Boolean operation](https://upload.wikimedia.org/wikipedia/commons/4/4a/Truth_table_for_AND%2C_OR%2C_and_NOT.png)
+
+##Data frames and lists
+summary() function provides a quick peek at this data set: 
+```
+summary
+```
+Most data sets are stored in R as dataframes.
+These are like matrices,but with the columns having their own names.
+Better ways to view the data are through the use of the summary() function as shown below, or by constructing an appropriate graph 
+```
+plot(y ~ x, data = ). 
+```
+For larger dataframes,a quick way of counting the number of rows and columns is important.
+```
+ nrow() 
+ ncol()
+```
+We can get both at once using dim() (for dimension):
+```
+dim( )
+```
+get summary information using str() (for structure):
+```
+str
+```
+**Data frame columns can also be addressed using their names using the $ operator. **
+
+**The with() function allows us to access columns of a data frame directly without using the $. **
+
+##Taking random samples from populations 
+```
+sampleID <- sample(1:15000, size = 8, replace = FALSE)
+sampleID
+```
+## Lists
+You can see the names of the objects in a list using the names() function, and extract parts of it:
+```
+names(d) # Print the names of the objects in the d data frame. 
+d$x # Print the x component of d
+
+```
+The list() function is one way of organizing multiple pieces of output from functions. 
+
+```{r}
+x <- c(3, 2, 3) 
+y <- c(7, 7) 
+z <- list(x = x,y = y) 
+z
+```
+
+There are several functions which make working with lists easy.Two of them are lapply() and vapply(). 
+**lapply()**:
+  function 'applies' another function to every element of a list and returns the results in a new list; for example:
+```{r}
+lapply(z, mean)
+```
+
+** vapply()**:
+  have the results in a vector;
+```{r}
+vapply(z, mean, 1)
+```
+ If mean() had returned a different kind of result, vapply() would have given an error. 
+ If we expect more than a single value, the results will be organized into a matrix.
+````{r}
+vapply(z, summary, numeric(6))
+```
+
+##Data input and output 
+
+###setwd()
+** Set As Working Directory**
+For example,to work with data in the folder mydata on the "C:drive", run
+```
+setwd("c:/mydata") # or setwd("c:\\mydata")
+```
+
+###dump()
+Suppose you have constructed an R object called usefuldata. In order to save this object for a future session.
+```{r}
+dump("usefuldata", "useful.R")
+```
+To save all of the objects that you have created during a sessin.
+```{r}
+dump(list = objects(), "all.R")
+```
+
+###source() 
+To retrieve the vector in a future session.
+```
+source("useful.R")
+```
+
+### Redirecting R output 
+By default,R directs the output of most of its functions to the screen.Output can be directed to a file with the sink() function.
+```
+sink() # Close solarmean.txt; print new output to screen
+```
+
+###Saving and retrieving image files 
+save workspace images without quitting
+```
+save.image("temp.RData")
+```
+
+###The read.table function 
+If such a data set is stored in a file called pretend.dat in the directory myfiles on the C: drive, then it can be read into an R data frame.
+```
+pretend.df <- read.table("c:/myfiles/pretend.dat", header =TRUE)
+```
+Reading in such a file with blank missing values:
+```
+dataset1 <read.table("file1.txt", header = TRUE, sep = ",", na.string = "" ) 
+```
+Reading in such a file with columns separated by tabs with blank missing values can be carried out using 
+```
+dataset2 <read.table("file2.txt", header = TRUE, sep = "\t", na.string = "" ) 
+```
+
+#Programming statistical graphics
+## contents
+1. High level plots
+  + Bar charts and dot charts
+  + Pie charts
+  + Histograms
+  + Scatterplots
+  + QQ plots
+2. Low level graphics functions
+  + The plotting region and margins
+  + Adding to plots
+3. Other graphics systems
+  + The ggplot2 package
+    
+
+##High level plots
+
+### Bar charts and dot charts 
+**barchart**
+```{r}
+WorldPhones51 <- WorldPhones[1,] 
+WorldPhones51
+```
+```{r}
+barplot(WorldPhones51)
+```
+```{r}
+barplot(WorldPhones51, cex.names = 0.75, cex.axis = 0.75, main = "Numbers of Telephones in 1951")
+```
+
+**dot chart**
+```{r}
+dotchart(WorldPhones51, xlab = "Numbers of Phones ('000s)")
+```
+
+###Pie charts 
+```{r}
+groupsizes <- c(18, 30, 32, 10, 10) 
+labels <- c("A", "B", "C", "D", "F")
+pie(groupsizes, labels, col = c("grey40", "white", "grey", "black", "grey90"))
+```
+
+###Histograms
+```{r}
+hist(log(1000*islands, 10), xlab = "Area (on base 10 log scale)", main = "Areas of the World's Largest Landmasses")
+```
+If you have n values of x, R, by default, divides the range into approximately log2(n)+1 intervals, giving rise to that number of bars.
+```{r}
+length(islands)
+```
+```
+5<log2(48)<6
+```
+
+### Box plots 
+1. A horizontal line is drawn at the median. 
+2. Split the data into two halves, each containing the median.
+3. Calculate the upper and lower quartiles as the medians of each half,and draw horizontal lines at each of these values. 
+  Then connect the lines to form a rectangular box.
+The box thus drawn defines the interquartile range (IQR). This is the difference between the upper quartile and the lower quartile. 
+```{r}
+boxplot(Sepal.Length ~ Species, data = iris, ylab = "Sepal length (cm)", main = "Iris measurements", boxwex = 0.5)
+```
+
+### Scatterplots 
+```{r}
+x <- rnorm(100) 
+# assigns 100 random normal observations to x 
+y <- rpois(100, 30) 
+# assigns 100 random Poisson observations 
+#to y; mean value is 30 
+mean(y) 
+# the resulting value should be near 30
+```
+```{r}
+plot(x, y, main = "Poisson versus Normal")
+```
+```{r}
+plot(x, y, pch = 16) # changes the plot symbol to a solid dot 
+plot(x, y, type = 'l') # plots a broken line (a dense tangle of line # segments here) 
+plot(sort(x), sort(y), type = 'l') # a plot of the sample "quantiles"
+```
+
+## QQ plots 
+**Quantile-quantile plots **
+A type of scatterplot used to compare the distributions of two groups or to compare a sample with a reference distribution. 
+```{r}
+par(mfrow = c(1,4)) 
+X <- rnorm(1000) 
+A <- rnorm(1000) 
+qqplot(X, A, main = "A and X are the same")
+
+B <- rnorm(1000, mean = 3, sd = 2) 
+qqplot(X, B, main = "B is rescaled X")
+
+C <- rt(1000, df = 2) 
+qqplot(X, C, main = "C has heavier tails")
+
+D <- rexp(1000) 
+qqplot(X, D, main = "D is skewed to the right")
+
+```
+
+##Low level graphics functions
+###The plotting region and margins 
+![margin](http://users.monash.edu.au/~murray/AIMS-R-users/ws/images/graphics-figureAnatomy1.png)
+
+### Adding to plots 
+```
+points(x, y, ...) # adds points 
+lines(x, y, ...) # adds line segments 
+text(x, y, labels, ...) # adds text into the graph 
+abline(a, b, ...) # adds the line $y = a + bx$ 
+abline(h = y, ...) # adds a horizontal line 
+abline(v = x, ...) # adds a vertical line 
+polygon(x, y, ...) 
+  # adds a closed and possibly filled polygon 
+segments(x0, y0, x1, y1, ...) # draws line segments arrows(x0, y0, x1, y1, ...) # draws arrows 
+symbols(x, y, ...) # draws circles, squares, thermometers, etc. 
+legend(x, y, legend, ...) # draws a legend 
+title(main, sub, xlab, ylab, ...) # adds a main title, a subtitle, an x-axis label and/or a y-axis label 
+mtext(text, side, line, ...) # draws text in the margins 
+axis(side, at, labels, ...) # adds an axis to the plot 
+box(...) # adds a box 
+```
+
+## Other graphics systems
+###The ggplot2 package
+```{r}
+library(ggplot2) 
+region <- names(WorldPhones51) 
+phones51 <- data.frame(Region = factor(region, levels = region), Telephones = WorldPhones51) 
+ggplot(phones51, aes(Region, Telephones)) + geom_bar(stat = "identity")
+```
+
+#Flow control
+## contents
+1. for(   ) loop
+2. if(   ) statement
+3. while(   ) loop
+4. repeat loop ; break 
+5. apply(   ) 
+
+### for( ) loop 
+```
+for (name in vector) { commands }
+```
+
+###if( ) statement 
+if (condition) {commands when TRUE} 
+if (condition) {commands when TRUE} else {commands when FALSE} This 
+```
+if (condition) { # do TRUE }
+    else { # do FALSE }
+```
+
+###while( ) loop 
+```
+while (condition) {statements}
+
+```
+
+###The repeat loop, and  break   statements 
+```
+repeat { statements
+    if (condition) break 
+  }
+```
+
+### apply( ) 
+```
+apply(H3, 1, sum)
+```
+****
+
+# Random variables
+## contents
+1. GENERATION OF PSEUDORANDOM NUMBERS
+    + runif
+2. Simulation of other random variables
+    + Binomial random variables
+    + Poisson random variables
+    + Exponential random numbers
+    + Normal random variables
+
+##GENERATION OF PSEUDORANDOM NUMBERS
+###runif
+```
+runif(n, min = a, max = b)
+```
+
+##Simulation of other random variables
+### Binomial random variables 
+```
+dbinom(x, size, prob)
+pbinom(x, size, prob)   # percentile 
+qbinom(percentile, size, prob)
+rbinom(n, size, prob) 
+```
+
+### Poisson random variables
+```
+dpois(x, lambda)
+rpois(n, lambda)
+```
+
+### Exponential random numbers 
+```
+pexp(q, rate) 
+rexp(n, rate)
+```
+
+###Normal random variables 
+```
+dnorm()
+pnorm()
+qnorm()
+rnorm(n, mean, sd)
+```
+
+# Matrix
+## contents
+1. Constructing matrix objects
+    + Matrix properties
+    + Triangular matrices
+2. Matrix multiplication and inversion
+    + Matrix inversion in R
+    + Eigenvalues and eigenvectors
+3. Other matrix decompositions    
+    + The Choleski decomposition of a positive
+    + The QR decomposition of a matrix
+
+## Constructing matrix objects 
+```
+matrix(data, nrow, ncol) # data is a vector of nrow*ncol values 
+cbind(d1, d2, ..., dm) # d1, ..., dm are vectors (columns) 
+rbind(d1, d2, ..., dn) # d1, ..., dn are vectors (rows)
+```
+
+##Matrix properties 
+```
+dim()
+det()
+diag()
+```
+```
+trace()
+t()     #calculate the matrix transpose 
+```
+The diag() function can also be used to turn a vector into a square diagonal matrix whose diagonal elements correspond to the entries of the given vector.
+```
+diag(diag())
+```
+
+###Triangular matrices 
+lower and upper triangular parts of matrices
+```
+lower.tri()
+upper.tri() 
+```
+
+## Matrix multiplication and inversion
+** Matrix multiplication can be performed using the operator %*% **
+```
+t(Y) %*% X
+```
+
+### Matrix inversion in R 
+Matrices are inverted and linear systems of equations are solved using the solve() or qr.solve() functions. solve() uses a method based on the LU decomposition ;qr.solve()is based on the QR decomposition 
+```
+ solve() 
+ qr.solve() 
+```
+** Solving linear systems **
+The function solve(A, b) gives the solution to systems of equations of the form Ax=b. 
+
+Find x such that H3x=b, where H3 is the 3??3 Hilbert matrix and b=[1 2 3]^T. 
+```
+b <- c(1, 2, 3) 
+x <- solve(H3, b) 
+x
+```
+ 
+### Eigenvalues and eigenvectors
+Eigenvalues and eigenvectors can be computed using the function eigen().
+```
+eigen()
+``` 
+ 
+##Other matrix decompositions
+The singular value decomposition of a square matrix A consists of three square matrices,U, D andV. The matrix D is a diagonal matrix. 
+A=UD(V^T)
+The singular value decomposition can be obtained using the function svd().
+```
+svd()
+```
+For example,the singular value decomposition of the 3x3 Hilbert matrix H3 
+```
+H3.svd <- svd(H3) 
+H3.svd
+```
+verify that these components can be multiplied in the appropriate way to reconstruct H3.:
+```
+H3.svd$u %*% diag(H3.svd$d) %*% t(H3.svd$v)
+```
+
+```
+#H3^(-1)=V(D^(-1))(U^(T)):
+H3.svd$v %*% diag(1/H3.svd$d) %*% t(H3.svd$u)
+```
+
+### The Choleski decomposition of a positive 
+B^2=A
+ The Choleski decomposition is similar, but the idea is to find an upper triangular matrix U such that (U^T)U =A. 
+```
+chol() 
+```
+A=(U^T)U
+compute the inverse of A using :
+A^(-1) = U^(-1)*(U^(-T) )
+```
+chol2inv() 
+```
+
+### The QR decomposition of a matrix 
+A=QR
+Ax=b
+QRx=b
+Rx=(Q^T)b
+This is an easier system to solve, because R is an upper triangular matrix.
+ (Q^T)b is an easily calculated n-vector
+```
+qr()
+```
+qr.Q() and qr.R() can be applied to this object to obtain the explicit Q and R matrices.
+```
+qr.Q() 
+qr.R()
+```
+For example :
+We can recover H3 by multiplying Q by R:
+```
+Q %*% R
+```
+we can simply to demonstrate that the decomposition can be used to get at the inverse of a matrix
+```
+qr.solve(R) %*% t(Q)
+```
+
+
+
